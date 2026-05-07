@@ -61,6 +61,9 @@ public class Spanglish {
     private static final boolean SAVE_LOCAL_WAV = Boolean.parseBoolean(
             System.getenv().getOrDefault("SAVE_LOCAL_WAV", "false")
     );
+    private static final boolean LANGUAGE_DETECTION = Boolean.parseBoolean(
+            System.getenv().getOrDefault("LANGUAGE_DETECTION", "true")
+    );
 
     private final String apiKey;
     private final URI apiEndpoint;
@@ -143,18 +146,23 @@ public class Spanglish {
         params.put("encoding", "pcm_s16le");
 
         /*
-         * language_detection only adds language metadata to Turn events. It does
-         * not select the transcription language. Universal-3 Pro code-switches
-         * natively; the prompt gives the model domain and language context.
+         * language_detection adds language metadata to Turn events. It does not
+         * translate text. Universal-3 Pro code-switches natively; the prompt gives
+         * the model domain context and explicitly tells it to preserve the source
+         * language rather than translating English phrases into Spanish.
          */
-        params.put("language_detection", "true");
-        params.put("prompt", String.join(" ",
-                "Transcribe multilingual conversation in English and Spanish.",
-                "Transcribe verbatim with standard punctuation.",
-                "Include filler words and incomplete utterances.",
+        params.put("language_detection", Boolean.toString(LANGUAGE_DETECTION));
+        params.put("prompt", System.getenv().getOrDefault("ASSEMBLYAI_STREAMING_PROMPT", String.join(" ",
+                "Transcribe the audio verbatim in the original language spoken.",
+                "Do not translate between English and Spanish.",
+                "If the speaker says an English phrase, output English words.",
+                "If the speaker says a Spanish phrase, output Spanish words.",
+                "Preserve code-switching exactly as spoken.",
+                "Use standard punctuation.",
+                "Include filler words and incomplete utterances when spoken.",
                 "Context: legal or court proceedings may include an interpreter;",
                 "preserve names, legal terms, dates, numbers, and case identifiers."
-        ));
+        )));
 
         /*
          * Universal-3 Pro uses punctuation-based turn detection. These values keep

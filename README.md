@@ -50,6 +50,16 @@ Optional local WAV recording for debugging only:
 export SAVE_LOCAL_WAV=true
 ```
 
+Optional transcript tuning:
+
+```bash
+# Removes [en]/[es] language metadata from the printed output.
+export LANGUAGE_DETECTION=false
+
+# Override the default prompt if a phrase is being over-biased into Spanish.
+export ASSEMBLYAI_STREAMING_PROMPT="Transcribe verbatim in the original language spoken. Do not translate between English and Spanish."
+```
+
 ## Primary References
 
 - AssemblyAI Streaming quickstart: https://www.assemblyai.com/docs/streaming/getting-started/transcribe-streaming-audio

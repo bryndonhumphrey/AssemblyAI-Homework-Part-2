@@ -13,10 +13,29 @@ This package contains the shareable materials for the Spanglish Inc. critical is
 
 ## Run The Sample
 
+Prerequisites:
+
+- Java 17 or newer
+- Maven
+
+On macOS with Homebrew:
+
 ```bash
-cd code
+brew install openjdk@17 maven
+export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
+```
+
+Verify both tools are available:
+
+```bash
+java -version
+mvn -version
+```
+
+```bash
+cd spanglish_inc_response/code
 export ASSEMBLYAI_API_KEY="your_api_key"
-mvn exec:java
+mvn compile exec:java
 ```
 
 Optional data residency:

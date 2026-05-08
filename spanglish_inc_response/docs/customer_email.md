@@ -33,7 +33,7 @@ Universal-3 Pro Streaming API reference: https://www.assemblyai.com/docs/api-ref
 
 We can definitely support 2,000 concurrent streams, AssemblyAI Streaming STT does not have a hard cap on total concurrent streaming sessions for paid accounts. The operational limit is the rate of new sessions opened per minute. Paid accounts start at 100+ new sessions per minute, and the limit automatically increases by 10% each minute whenever you use at least 70% of your current limit.
 
-For an immediate production ramp to 2,000 concurrent streams using our auto-scaling feature, assuming you max out the new-stream limit every minute, we recommend starting all of your streams over a 12 minute period using the table below.
+For an immediate production ramp to 2,000 concurrent streams using our auto-scaling feature, assuming you max out the new-stream limit every minute, we recommend starting all of your streams over a 12 minute period using the table below. (github may have issues rendering the table below in preview view, switch to code view)
 
 | Minute | New sessions/min | Total concurrent streams |
 | 1 | 100 | 100 |

@@ -6,10 +6,8 @@ This package contains the shareable materials for the Spanglish Inc. critical is
 
 - `code/` - corrected Java sample using AssemblyAI Streaming STT v3 and Universal-3 Pro Streaming.
 - `docs/customer_email.md` - customer-facing explanation and scaling plan.
-- `docs/privacy_retention_answers.md` - direct answers to data privacy and retention concerns.
 - `docs/internal_engineering_summary.md` - internal engineering summary and why this is not an AssemblyAI product bug.
 - `docs/ooo_handoff.md` - handoff notes for the returning Applied AI Engineer.
-- `docs/loom_walkthrough_script.md` - short script for recording a Loom-style walkthrough.
 
 ## Run The Sample
 

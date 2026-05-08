@@ -5,6 +5,7 @@ Subject: Hotfix for your Java Streaming STT issue and plan for 2,000 concurrent 
 Hi Spanglish team,
 
 I reviewed the Java snippet you sent and was able to make some modifications to get it working. Luckily, this does not appear to be a failure in AssemblyAI's Streaming STT service. The original code was opening the Streaming v3 WebSocket with parameters that did not match the audio being sent.
+Video Demo of working code: https://drive.google.com/file/d/1vmCoXSia3BNWUBFoV4O3uacbOwNKkbPh/view?usp=sharing
 
 I prepared a corrected Java sample available at: https://github.com/bryndonhumphrey/AssemblyAI-Homework-Part-2/blob/main/spanglish_inc_response/code/src/main/java/com/assemblyai/Spanglish.java
 Here are the instructions to getting it working: https://github.com/bryndonhumphrey/AssemblyAI-Homework-Part-2/blob/main/README.md

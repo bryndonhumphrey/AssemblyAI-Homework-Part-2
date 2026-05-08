@@ -4,15 +4,13 @@
 
 Spanglish Inc. reported that Streaming STT "doesn't work at all" and sent a Java snippet. I reviewed the snippet against current AssemblyAI Streaming v3 and Universal-3 Pro docs. The issue appears to be their integration, not a product bug.
 
-The corrected sample is in:
+The corrected sample is available here:
+https://github.com/bryndonhumphrey/AssemblyAI-Homework-Part-2/blob/main/spanglish_inc_response/code/src/main/java/com/assemblyai/Spanglish.java
 
-`spanglish_inc_response/code/src/main/java/com/assemblyai/Spanglish.java`
+Customer-facing email that was sent:
+https://github.com/bryndonhumphrey/AssemblyAI-Homework-Part-2/blob/main/spanglish_inc_response/docs/customer_email.md
 
-Customer-facing draft:
-
-`spanglish_inc_response/docs/customer_email.md`
-
-## Main Root Cause
+## High-level Summary
 
 Their WebSocket URL omitted `speech_model` and declared `encoding=opus`, while their Java code sends raw PCM16 little-endian microphone bytes. Universal-3 Pro Streaming should use:
 
@@ -24,40 +22,26 @@ encoding=pcm_s16le
 
 They were also sending 25ms audio chunks. The fixed sample sends 50ms chunks.
 
-## Customer Guidance To Send
+## Customer Guidance Sent
 
-- Use Universal-3 Pro Streaming for English/Spanish code switching.
-- Use `prompt` for courtroom/interpreter context.
-- Use `language_detection=true` only if they want language metadata.
-- Do not use `language_code` for Universal-3 Pro Streaming.
-- Disable local audio retention in their app unless they intentionally need it. The fixed sample makes WAV recording opt-in.
-- Gracefully terminate every session with `{"type":"Terminate"}`.
+- The request did not include `speech_model`. Streaming v3 requires `speech_model` on every transcription request. For your use case, the right model is Universal-3 Pro Streaming: `speech_model=u3-rt-pro`.
+- The request declared `encoding=opus`, but the Java microphone capture code sends raw signed 16-bit little-endian PCM audio. Streaming v3 accepts `pcm_s16le` or `pcm_mulaw`, so this should be `encoding=pcm_s16le`.
+- The sample was sending 25ms chunks. The Streaming API expects binary audio chunks between 50ms and 1000ms, so the fixed code sends 50ms chunks.
+- There was a Compile-level issue in the original code snippet. The class is `Spanglish`, but `main` instantiates `StreamingTranscription`. If that is in the production code too, it would fail before opening a stream.
+
 
 ## Scaling To 2,000 Streams
 
-AssemblyAI Streaming uses new-sessions-per-minute limits rather than a hard concurrent-stream cap. Paid accounts start at 100+ new sessions/minute, auto-scale by 10% when utilization is at least 70%, and custom concurrency limits are available.
-
-Action items:
-
-- Confirm their current rate limit in the dashboard or with Support/Sales.
-- If they need an immediate hard launch, request a limit increase instead of relying only on organic ramp.
-- If starting at 100 new sessions/minute, a controlled max-rate ramp reaches roughly 2,000 open sessions in about 12 minutes.
-- Tell them to implement a rate limiter and backoff on WebSocket close code `1008`.
-- If their backend proxies audio, validate network egress for about 64 MB/s before WebSocket overhead at 2,000 streams.
+The customer email outlines how they can use auto-scaling to scale up to 2000 concurrent streams over a 12 minute period.
 
 ## Privacy Items
 
-- Confirm whether Spanglish is opted out of model training.
-- For Streaming STT, AssemblyAI offers zero data retention of audio and transcripts when opted out. Metadata remains for logging and billing.
-- If they need data residency, use `streaming.us.assemblyai.com` or `streaming.eu.assemblyai.com`.
-- If they continue async usage, do not conflate async retention with streaming retention. Async artifacts follow TTL/BAA/delete-request behavior.
+Spanglish wants confidence that no customer data is being retained by our systems. Sent them our data retention policy and outlined how to opt-out of data collection.
 
 ## Suggested Next Customer Touch
 
-1. Send the customer email draft and corrected code.
-2. Offer a 30-minute working session to run the sample with their API key and actual audio path.
-3. Ask for timestamps/session IDs/close codes from their failed production attempts if they still see failures after the code change.
-4. Open an account-side request to confirm rate limit and ZDR/model-training opt-out status.
+1. Follow up with customer to ensure the fixes resolved their issues in production.
+2. Ensure they followed data Opting Out Process.
 
 ## Sources
 
@@ -65,3 +49,5 @@ Action items:
 - Universal-3 Pro Streaming API reference: https://www.assemblyai.com/docs/api-reference/streaming-api/universal-3-pro-streaming/universal-3-pro-streaming
 - Streaming concurrency: https://www.assemblyai.com/docs/streaming/concurrency
 - Data retention and model training: https://www.assemblyai.com/docs/data-retention-and-model-training
+
+Please let me know if you have any questions.

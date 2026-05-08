@@ -1,15 +1,5 @@
 package com.assemblyai;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import org.java_websocket.client.WebSocketClient;
-import org.java_websocket.handshake.ServerHandshake;
-
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.TargetDataLine;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -28,6 +18,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.TargetDataLine;
+
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.handshake.ServerHandshake;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 public class Spanglish {
     private static final String API_KEY_ENV = "ASSEMBLYAI_API_KEY";
@@ -159,9 +161,7 @@ public class Spanglish {
                 "If the speaker says a Spanish phrase, output Spanish words.",
                 "Preserve code-switching exactly as spoken.",
                 "Use standard punctuation.",
-                "Include filler words and incomplete utterances when spoken.",
-                "Context: legal or court proceedings may include an interpreter;",
-                "preserve names, legal terms, dates, numbers, and case identifiers."
+                "Include filler words and incomplete utterances when spoken."
         )));
 
         /*
